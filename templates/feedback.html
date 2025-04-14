@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% block class %}class="sub_page"{% endblock %} <!-- Fixed the endblock -->
+
+{% block feedback_status %}active{% endblock feedback_status %}
+{% block main %}
+
+  <!-- start feedback form -->
+
+  <section class="book_section layout_padding">
+    <div class="container">
+      <div class="heading_container">
+        <h2>
+          Feedback Form
+        </h2>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form_container">
+            <form action="{% url "Feedback" %}" method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div>
+                  <input type="text" class="form-control" name="user_name" required placeholder="Your Name" />
+              </div>
+              <div class="mb-3">
+                  <textarea class="form-control" id="exampleFormControlTextarea1" name="description" rows="3" required placeholder="Describe your experience here"></textarea>
+              </div>
+              <div>
+                  <select class="form-control nice-select wide" required name="rating">
+                      <option value="" disabled selected>Please Give Us Rating?</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                  </select>
+              </div>
+              <div>
+                  <label for="formFileLg" class="form-label">Select Image</label>
+                  <input class="form-control form-control-lg" id="formFileLg" type="file" name="image">
+              </div>
+              <div class="btn_box">
+                  <button type="submit">Submit</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- end feedback form -->
+
+{% endblock main %}
+
+<!-- Feedback display section -->
+{% block feedback %}
+
+<section class="client_section layout_padding-bottom">
+  <div class="container">
+    <div class="heading_container heading_center psudo_white_primary mb_45">
+      <h2>What Our Customers Say</h2>
+    </div>
+    <div class="carousel-wrap row">
+      <div class="owl-carousel client_owl-carousel">
+        {% for k in feedback %}
+        <div class="item">
+          <div class="box">
+            <div class="detail-box">
+              <p>{{ k.description }}</p>
+              <h6>{{ k.user_name }}</h6>
+              <p>Rating: {{ k.rating }}/5</p>
+            </div>
+            <div class="img-box">
+              {% if k.image %}
+              <img src="{{ k.image.url }}" alt="{{ k.user_name }}" class="box-img"/>
+              {% else %}
+              <img src="{% static 'images/default.jpg' %}" alt="Default Image" class="box-img"/>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

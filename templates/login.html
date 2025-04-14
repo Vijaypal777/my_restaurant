@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block main %}
+<style>
+  body {
+    background-color: #f7f7f7;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  .login-container {
+    max-width: 400px;
+    margin: 60px auto;
+    background: white;
+    padding: 30px 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  .login-container h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #333;
+  }
+  .login-container label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+    font-weight: 500;
+  }
+  .login-container input[type="text"],
+  .login-container input[type="password"],
+  .login-container input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+  }
+  .login-container button {
+    width: 100%;
+    padding: 12px;
+    background-color: #3498db;
+    border: none;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s ease;
+  }
+  .login-container button:hover {
+    background-color: #2980b9;
+  }
+  .errorlist {
+    color: red;
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
+</style>
+
+<div class="login-container">
+  <h2>Login to Your Account</h2>
+
+  <form method="post">
+    {% csrf_token %}
+    {% for field in form %}
+      <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+      {{ field }}
+      {% if field.errors %}
+        <div class="errorlist">{{ field.errors|striptags }}</div>
+      {% endif %}
+    {% endfor %}
+    
+    <button type="submit">Login</button>
+  </form>
+</div>
+{% endblock %}
